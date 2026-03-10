@@ -1,0 +1,40 @@
+# Data preprocessing configuration
+
+sentinel2:
+  product_type: S2MSI2A
+  cloud_cover_max: 10
+  bands:
+    - B02  # Blue (10m)
+    - B03  # Green (10m)
+    - B04  # Red (10m)
+    - B08  # NIR (10m)
+    - B05  # Red Edge 1 (20m)
+    - B06  # Red Edge 2 (20m)
+    - B07  # Red Edge 3 (20m)
+
+preprocessing:
+  tile_size: 224
+  overlap: 32
+  normalize: true
+  nodata_threshold: 0.1  # max fraction of nodata per tile
+
+labels:
+  source: osm  # OpenStreetMap building polygons
+  buffer_m: 0  # buffer around building polygons
+  min_area_m2: 25  # minimum building area to include
+
+split:
+  train: 0.7
+  val: 0.15
+  test: 0.15
+  seed: 42
+  strategy: spatial  # spatial split to avoid data leakage
+
+aoi:
+  name: algiers
+  bbox:
+    west: 2.95
+    south: 36.70
+    east: 3.15
+    north: 36.82
+  crs: EPSG:4326

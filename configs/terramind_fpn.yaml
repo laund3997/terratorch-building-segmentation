@@ -1,0 +1,51 @@
+trainer:
+  max_epochs: 50
+  accelerator: gpu
+  precision: 16-mixed
+  default_root_dir: outputs/terramind_fpn
+  callbacks:
+    - class_path: lightning.pytorch.callbacks.ModelCheckpoint
+      init_args:
+        monitor: val/loss
+        mode: min
+        save_top_k: 3
+    - class_path: lightning.pytorch.callbacks.EarlyStopping
+      init_args:
+        monitor: val/loss
+        patience: 10
+        mode: min
+
+model:
+  class_path: terratorch.tasks.SemanticSegmentationTask
+  init_args:
+    model_args:
+      backbone: terramind
+      decoder: FPNDecoder
+      num_classes: 2
+      backbone_pretrained: true
+    loss: ce
+    lr: 5e-5
+    optimizer: AdamW
+    scheduler: CosineAnnealingLR
+
+data:
+  class_path: terratorch.datamodules.GenericNonGeoSegmentationDataModule
+  init_args:
+    train_data_root: data/processed/train/images
+    train_label_data_root: data/processed/train/masks
+    val_data_root: data/processed/val/images
+    val_label_data_root: data/processed/val/masks
+    test_data_root: data/processed/test/images
+    test_label_data_root: data/processed/test/masks
+    img_size: 224
+    batch_size: 12
+    num_workers: 4
+    num_classes: 2
+    bands:
+      - B02
+      - B03
+      - B04
+      - B08
+      - B05
+      - B06
+      - B07

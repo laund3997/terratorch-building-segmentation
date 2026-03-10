@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this project, please cite it as below."
+title: "TerraTorch Building Segmentation: Fine-tuning GFMs for Building Footprint Extraction"
+authors:
+  - family-names: "Arbouz"
+    given-names: "Maamar"
+    orcid: ""
+type: software
+repository-code: "https://github.com/OMUZ9924/terratorch-building-segmentation"
+license: Apache-2.0
+keywords:
+  - geospatial-foundation-models
+  - building-segmentation
+  - sentinel-2
+  - terratorch
+  - remote-sensing
+  - fine-tuning
+  - prithvi

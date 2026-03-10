@@ -1,0 +1,47 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.env/
+
+# Data (large files)
+data/
+*.tif
+*.tiff
+*.jp2
+
+# Model checkpoints
+checkpoints/
+outputs/
+*.ckpt
+*.pt
+*.pth
+
+# Logs
+logs/
+*.log
+tb_logs/
+lightning_logs/
+wandb/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Distribution
+dist/
+build/
+*.egg-info/

@@ -1,0 +1,63 @@
+trainer:
+  max_epochs: 50
+  accelerator: gpu
+  precision: 16-mixed
+  default_root_dir: outputs/prithvi_upernet
+  callbacks:
+    - class_path: lightning.pytorch.callbacks.ModelCheckpoint
+      init_args:
+        monitor: val/loss
+        mode: min
+        save_top_k: 3
+        filename: "epoch={epoch}-val_loss={val/loss:.4f}"
+    - class_path: lightning.pytorch.callbacks.EarlyStopping
+      init_args:
+        monitor: val/loss
+        patience: 10
+        mode: min
+    - class_path: lightning.pytorch.callbacks.LearningRateMonitor
+      init_args:
+        logging_interval: step
+  logger:
+    class_path: lightning.pytorch.loggers.TensorBoardLogger
+    init_args:
+      save_dir: outputs/prithvi_upernet/logs
+      name: prithvi_upernet
+
+model:
+  class_path: terratorch.tasks.SemanticSegmentationTask
+  init_args:
+    model_args:
+      backbone: prithvi_100M
+      decoder: UperNetDecoder
+      num_classes: 2
+      backbone_pretrained: true
+    loss: ce
+    lr: 1e-4
+    optimizer: AdamW
+    scheduler: CosineAnnealingLR
+    class_weights:
+      - 0.3
+      - 0.7
+
+data:
+  class_path: terratorch.datamodules.GenericNonGeoSegmentationDataModule
+  init_args:
+    train_data_root: data/processed/train/images
+    train_label_data_root: data/processed/train/masks
+    val_data_root: data/processed/val/images
+    val_label_data_root: data/processed/val/masks
+    test_data_root: data/processed/test/images
+    test_label_data_root: data/processed/test/masks
+    img_size: 224
+    batch_size: 16
+    num_workers: 4
+    num_classes: 2
+    bands:
+      - B02
+      - B03
+      - B04
+      - B08
+      - B05
+      - B06
+      - B07
